@@ -2,6 +2,7 @@ package HealthDeclaration.service;
 
 import HealthDeclaration.form.UserAddForm;
 import HealthDeclaration.form.UserFormSearch;
+import HealthDeclaration.form.UserImportForm;
 import HealthDeclaration.modal.dto.UserDto;
 import HealthDeclaration.modal.entity.User;
 import HealthDeclaration.modal.request.UserChangePassForm;
@@ -55,4 +56,6 @@ public interface IUserService {
     String changePasswordByUsername(UserChangePassForm form);
 
     String changeYourPassword(UserChangePassForm form);
+
+    boolean addNewListStudent(List<UserImportForm> list);
 }

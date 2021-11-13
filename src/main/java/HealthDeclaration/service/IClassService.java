@@ -24,4 +24,11 @@ public interface IClassService {
     List<ClassDto> searchClassesByName(String className);
 
     List<Class> getByTeacherUser(String username);
+
+    /**
+     *
+     * @param className
+     * @return
+     */
+    Class getClasByName(String className);
 }

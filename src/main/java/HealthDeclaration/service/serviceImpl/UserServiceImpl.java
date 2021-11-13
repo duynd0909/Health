@@ -7,6 +7,7 @@ import HealthDeclaration.common.utils.StringUtils;
 import HealthDeclaration.constants.RoleConstant;
 import HealthDeclaration.form.UserAddForm;
 import HealthDeclaration.form.UserFormSearch;
+import HealthDeclaration.form.UserImportForm;
 import HealthDeclaration.modal.dto.UserDto;
 import HealthDeclaration.modal.entity.Class;
 import HealthDeclaration.modal.entity.Role;
@@ -70,10 +71,10 @@ public class UserServiceImpl extends BaseService implements IUserService {
         User user = repository.getByUsername(updateForm.getUsername());
         user.setModifiedBy(getLoggedInUsername());
         user.setModifiedTime(new Date());
-        if(ObjectUtils.isNullorEmpty(updateForm.getFullName())) {
+        if (ObjectUtils.isNullorEmpty(updateForm.getFullName())) {
             throw new IllegalArgumentException("Tên người dùng không được để trống!");
         }
-        if(ObjectUtils.isNullorEmpty(updateForm.getGender())) {
+        if (ObjectUtils.isNullorEmpty(updateForm.getGender())) {
             throw new IllegalArgumentException("Giới tính không được để trống!");
         }
 
@@ -82,44 +83,44 @@ public class UserServiceImpl extends BaseService implements IUserService {
         String oldFullName = StringUtils.deAccent(user.getFullName());
 
         // Compare old name with new name if diffrebce --> set new account
-        if(!oldFullName.equalsIgnoreCase(newFullName)) {
+        if (!oldFullName.equalsIgnoreCase(newFullName)) {
             user.setUsername(getNewAccountWithFullName(updateForm.getFullName()));
         }
-        if(!ObjectUtils.isNullorEmpty(updateForm.getFullName())) {
+        if (!ObjectUtils.isNullorEmpty(updateForm.getFullName())) {
             user.setFullName(updateForm.getFullName());
         }
-        if(!ObjectUtils.isNullorEmpty(updateForm.getDob())) {
+        if (!ObjectUtils.isNullorEmpty(updateForm.getDob())) {
             user.setDob(updateForm.getDob());
         }
-        if(!ObjectUtils.isNullorEmpty(updateForm.getGender())) {
+        if (!ObjectUtils.isNullorEmpty(updateForm.getGender())) {
             user.setGender(updateForm.getGender());
         }
-        if(!ObjectUtils.isNullorEmpty(updateForm.getPhoneNumber())) {
+        if (!ObjectUtils.isNullorEmpty(updateForm.getPhoneNumber())) {
             user.setPhoneNumber(updateForm.getPhoneNumber());
         }
-        if(!ObjectUtils.isNullorEmpty(updateForm.getParentPhoneNumber())) {
+        if (!ObjectUtils.isNullorEmpty(updateForm.getParentPhoneNumber())) {
             user.setParentPhoneNumber(updateForm.getParentPhoneNumber());
         }
-        if(!ObjectUtils.isNullorEmpty(updateForm.getProvinceCode())) {
+        if (!ObjectUtils.isNullorEmpty(updateForm.getProvinceCode())) {
             user.setProvinceCode(updateForm.getProvinceCode());
         }
-        if(!ObjectUtils.isNullorEmpty(updateForm.getDistrictCode())) {
+        if (!ObjectUtils.isNullorEmpty(updateForm.getDistrictCode())) {
             user.setDistrictCode(updateForm.getDistrictCode());
         }
-        if(!ObjectUtils.isNullorEmpty(updateForm.getWardCode())) {
+        if (!ObjectUtils.isNullorEmpty(updateForm.getWardCode())) {
             user.setWardCode(updateForm.getWardCode());
         }
-        if(!ObjectUtils.isNullorEmpty(updateForm.getRoleCode())) {
+        if (!ObjectUtils.isNullorEmpty(updateForm.getRoleCode())) {
             user.setRoleCode(updateForm.getRoleCode());
         }
-        if(!ObjectUtils.isNullorEmpty(updateForm.getAddressDetail())) {
+        if (!ObjectUtils.isNullorEmpty(updateForm.getAddressDetail())) {
             user.setAddressDetail(updateForm.getAddressDetail());
         }
-        if(!ObjectUtils.isNullorEmpty(updateForm.getHealthInsuranceId())) {
+        if (!ObjectUtils.isNullorEmpty(updateForm.getHealthInsuranceId())) {
             user.setHealthInsuranceId(updateForm.getHealthInsuranceId());
         }
-        if(!ObjectUtils.isNullorEmpty(updateForm.getGmail())) {
-            if(updateForm.getGmail().contains("@gmail.com")) {
+        if (!ObjectUtils.isNullorEmpty(updateForm.getGmail())) {
+            if (updateForm.getGmail().contains("@gmail.com")) {
                 user.setGmail(updateForm.getGmail());
             } else {
                 throw new IllegalArgumentException("Email phải gồm đuôi \"@gmail.com\"");
@@ -131,7 +132,7 @@ public class UserServiceImpl extends BaseService implements IUserService {
     @Override
     public void deleteByUsername(String username) {
         User user = repository.getByUsername(username);
-        if(!ObjectUtils.isNullorEmpty(user)) {
+        if (!ObjectUtils.isNullorEmpty(user)) {
             throw new IllegalArgumentException("Không tìm thấy người dùng với tài khoản " + username + "!");
         }
         user.setModifiedBy(getLoggedInUsername());
@@ -147,7 +148,7 @@ public class UserServiceImpl extends BaseService implements IUserService {
     @Override
     public List<UserDto> searchTeacherByName(String teacherName, int pPageIndex, int pageSize) {
         Role teacherRole = roleService.getByCode(RoleConstant.ROLE_GIAO_VIEN_CHU_NHIEM);
-        if(!ObjectUtils.isNullorEmpty(teacherRole)) {
+        if (!ObjectUtils.isNullorEmpty(teacherRole)) {
             return userRepositoryCustom.searchTeacherByName(teacherName,
                     teacherRole.getRoleCode(), pPageIndex, pageSize);
         }
@@ -179,7 +180,7 @@ public class UserServiceImpl extends BaseService implements IUserService {
     public List<UserDto> searchUserToManagement(UserFormSearch formSearch, int pageIndex, int pageSize) {
         String roleCodeOFUser = getLoggedInUserRoles();
         List<UserDto> resultList = new ArrayList<>();
-        if(ObjectUtils.isNullorEmpty(roleCodeOFUser)) {
+        if (ObjectUtils.isNullorEmpty(roleCodeOFUser)) {
             throw new IllegalArgumentException("You don't have permission to see that data!");
         }
 
@@ -195,10 +196,11 @@ public class UserServiceImpl extends BaseService implements IUserService {
         }
         resultList = userRepositoryCustom.searchStudentToManagement(formSearch, pageIndex, pageSize);
 
-        if(!ObjectUtils.isNullorEmpty(resultList)) {
-            for(int i = 0 ; i < resultList.size() ; i++) {
+        if (!ObjectUtils.isNullorEmpty(resultList)) {
+            for (int i = 0; i < resultList.size(); i++) {
                 resultList.get(i).setIndex(pageSize * (pageIndex - 1) + i + 1);
-            };
+            }
+            ;
         }
         return resultList;
     }
@@ -206,10 +208,10 @@ public class UserServiceImpl extends BaseService implements IUserService {
     @Override
     public Long countSearchUserToManagement(UserFormSearch formSearch) {
         String roleCodeOFUser = getLoggedInUserRoles();
-        if(ObjectUtils.isNullorEmpty(roleCodeOFUser)) {
+        if (ObjectUtils.isNullorEmpty(roleCodeOFUser)) {
             throw new IllegalArgumentException("You don't have permission to see that data!");
         }
-        if(roleCodeOFUser.equalsIgnoreCase(RoleConstant.ROLE_GIAO_VIEN_CHU_NHIEM)) {
+        if (roleCodeOFUser.equalsIgnoreCase(RoleConstant.ROLE_GIAO_VIEN_CHU_NHIEM)) {
             List<Class> clazzList = classService.getByTeacherUser(getLoggedInUsername());
 
             if (!ObjectUtils.isNullorEmpty(formSearch.getGender())) {
@@ -252,7 +254,7 @@ public class UserServiceImpl extends BaseService implements IUserService {
         user.setCreatedTime(new Date());
         user.setModifiedBy(getLoggedInUsername());
         user.setModifiedTime(new Date());
-        if(!ObjectUtils.isNullorEmpty(userAddForm.getFullName())) {
+        if (!ObjectUtils.isNullorEmpty(userAddForm.getFullName())) {
             user.setFullName(userAddForm.getFullName());
         } else {
             throw new IllegalArgumentException("Full name can not be blank!");
@@ -266,11 +268,11 @@ public class UserServiceImpl extends BaseService implements IUserService {
         user.setWardCode(userAddForm.getWardCode());
         user.setAddressDetail(userAddForm.getAddressDetail());
         Role role = roleService.getByCode(RoleConstant.ROLE_HOC_SINH);
-        if(!ObjectUtils.isNullorEmpty(role)) {
+        if (!ObjectUtils.isNullorEmpty(role)) {
             user.setRoleCode(role.getRoleCode());
         }
         String username = getNewAccountWithFullName(userAddForm.getFullName());
-        if(!ObjectUtils.isNullorEmpty(username)) {
+        if (!ObjectUtils.isNullorEmpty(username)) {
             user.setUsername(username);
         } else {
             throw new IllegalArgumentException("Fail in create account!");
@@ -290,7 +292,7 @@ public class UserServiceImpl extends BaseService implements IUserService {
     public List<UserDto> searchTeacherToManagement(UserFormSearch formSearch, int pageIndex, int pageSize) {
         String roleCodeOFUser = getLoggedInUserRoles();
         List<UserDto> resultList = new ArrayList<>();
-        if(ObjectUtils.isNullorEmpty(roleCodeOFUser)
+        if (ObjectUtils.isNullorEmpty(roleCodeOFUser)
                 || (!roleCodeOFUser.equalsIgnoreCase(RoleConstant.ROLE_HIEU_TRUONG)
                 && !roleCodeOFUser.equalsIgnoreCase(RoleConstant.ROLE_HIEU_PHO))) {
             throw new IllegalArgumentException("You don't have permission to see that data!");
@@ -308,10 +310,11 @@ public class UserServiceImpl extends BaseService implements IUserService {
         }
         resultList = userRepositoryCustom.searchTeacherToManagement(formSearch, pageIndex, pageSize, RoleConstant.ROLE_HOC_SINH);
 
-        if(!ObjectUtils.isNullorEmpty(resultList)) {
-            for(int i = 0 ; i < resultList.size() ; i++) {
+        if (!ObjectUtils.isNullorEmpty(resultList)) {
+            for (int i = 0; i < resultList.size(); i++) {
                 resultList.get(i).setIndex(pageSize * (pageIndex - 1) + i + 1);
-            };
+            }
+            ;
         }
         return resultList;
     }
@@ -339,7 +342,7 @@ public class UserServiceImpl extends BaseService implements IUserService {
         user.setCreatedTime(new Date());
         user.setModifiedBy(getLoggedInUsername());
         user.setModifiedTime(new Date());
-        if(!ObjectUtils.isNullorEmpty(userAddForm.getFullName())) {
+        if (!ObjectUtils.isNullorEmpty(userAddForm.getFullName())) {
             user.setFullName(userAddForm.getFullName());
         } else {
             throw new IllegalArgumentException("Full name can not be blank!");
@@ -354,7 +357,7 @@ public class UserServiceImpl extends BaseService implements IUserService {
         user.setAddressDetail(userAddForm.getAddressDetail());
         user.setRoleCode(userAddForm.getRoleCode());
         String username = getNewAccountWithFullName(userAddForm.getFullName());
-        if(!ObjectUtils.isNullorEmpty(username)) {
+        if (!ObjectUtils.isNullorEmpty(username)) {
             user.setUsername(username);
         } else {
             throw new IllegalArgumentException("Fail in create account!");
@@ -372,12 +375,12 @@ public class UserServiceImpl extends BaseService implements IUserService {
     @Override
     public String resetPasswordByUsername(String username) {
         String role = getLoggedInUserRoles();
-        if(role.equalsIgnoreCase(RoleConstant.ROLE_GIAO_VIEN_CHU_NHIEM)
-            || role.equalsIgnoreCase(RoleConstant.ROLE_HIEU_TRUONG)
-            || role.equalsIgnoreCase(RoleConstant.ROLE_HIEU_PHO)) {
+        if (role.equalsIgnoreCase(RoleConstant.ROLE_GIAO_VIEN_CHU_NHIEM)
+                || role.equalsIgnoreCase(RoleConstant.ROLE_HIEU_TRUONG)
+                || role.equalsIgnoreCase(RoleConstant.ROLE_HIEU_PHO)) {
 
             User user = repository.getByUsername(username);
-            if(!ObjectUtils.isNullorEmpty(user)) {
+            if (!ObjectUtils.isNullorEmpty(user)) {
                 user.setModifiedTime(new Date());
                 user.setModifiedBy(getLoggedInUsername());
                 user.setPassword(defaultPassword);
@@ -393,20 +396,20 @@ public class UserServiceImpl extends BaseService implements IUserService {
     @Override
     public String changePasswordByUsername(UserChangePassForm form) {
         String role = getLoggedInUserRoles();
-        if(ObjectUtils.isNullorEmpty(form.getUsername())
-            || ObjectUtils.isNullorEmpty(form.getNewPassword())
-             || ObjectUtils.isNullorEmpty(form.getConfirmPassword())) {
+        if (ObjectUtils.isNullorEmpty(form.getUsername())
+                || ObjectUtils.isNullorEmpty(form.getNewPassword())
+                || ObjectUtils.isNullorEmpty(form.getConfirmPassword())) {
             LOGGER.error("Thông tin tài khoản mật khẩu chưa hợp lệ!");
         }
 
-        if(ObjectUtils.isNullorEmpty(form.getOldPassword())
-                    && !role.equalsIgnoreCase(RoleConstant.ROLE_GIAO_VIEN_CHU_NHIEM)
-                    && !role.equalsIgnoreCase(RoleConstant.ROLE_HIEU_TRUONG)
-                    && !role.equalsIgnoreCase(RoleConstant.ROLE_HIEU_PHO) ) {
+        if (ObjectUtils.isNullorEmpty(form.getOldPassword())
+                && !role.equalsIgnoreCase(RoleConstant.ROLE_GIAO_VIEN_CHU_NHIEM)
+                && !role.equalsIgnoreCase(RoleConstant.ROLE_HIEU_TRUONG)
+                && !role.equalsIgnoreCase(RoleConstant.ROLE_HIEU_PHO)) {
             LOGGER.error("Không thể đặt lại mật khẩu cho tài khoản này!");
         }
         User user = repository.getByUsername(form.getUsername());
-        if(!ObjectUtils.isNullorEmpty(user)) {
+        if (!ObjectUtils.isNullorEmpty(user)) {
             user.setModifiedTime(new Date());
             user.setModifiedBy(getLoggedInUsername());
             user.setPassword(form.getNewPassword());
@@ -421,7 +424,7 @@ public class UserServiceImpl extends BaseService implements IUserService {
     @Override
     public String changeYourPassword(UserChangePassForm form) {
         String username = getLoggedInUsername();
-        if(ObjectUtils.isNullorEmpty(username)
+        if (ObjectUtils.isNullorEmpty(username)
                 || ObjectUtils.isNullorEmpty(form.getOldPassword())
                 || ObjectUtils.isNullorEmpty(form.getNewPassword())
                 || ObjectUtils.isNullorEmpty(form.getConfirmPassword())) {
@@ -429,7 +432,7 @@ public class UserServiceImpl extends BaseService implements IUserService {
         }
 
         User user = repository.getByUsernameAndPassword(form.getUsername(), form.getOldPassword());
-        if(!ObjectUtils.isNullorEmpty(user)) {
+        if (!ObjectUtils.isNullorEmpty(user)) {
             user.setModifiedTime(new Date());
             user.setModifiedBy(getLoggedInUsername());
             user.setPassword(form.getNewPassword());
@@ -446,15 +449,15 @@ public class UserServiceImpl extends BaseService implements IUserService {
         fullName = StringUtils.convertVietnameseToEnglish(fullName);
         List<String> list = Arrays.asList(fullName.split(" "));
         int sizeName = list.size();
-        if( sizeName > 1) {
+        if (sizeName > 1) {
             account = list.get(sizeName - 1);
-            for (int i = 0 ; i < sizeName - 1; i++) {
+            for (int i = 0; i < sizeName - 1; i++) {
                 account = account + list.get(i).substring(0, 1);
             }
         }
         account = account.toLowerCase();
-        List<String> accList =  repository.getLastAccountByAccount(account + "%");
-        if(ObjectUtils.isNullorEmpty(accList)) {
+        List<String> accList = repository.getLastAccountByAccount(account + "%");
+        if (ObjectUtils.isNullorEmpty(accList)) {
             return account;
         }
         for (int i = accList.size() - 1; i >= 0; i--) {
@@ -470,4 +473,51 @@ public class UserServiceImpl extends BaseService implements IUserService {
         return account;
     }
 
+    @Override
+    public boolean addNewListStudent(List<UserImportForm> list) {
+        try {
+            List<User> listUser = new ArrayList<>();
+            for (UserImportForm userImportForm : list
+            ) {
+                User user = new User();
+                user.setCreatedBy(getLoggedInUsername());
+                user.setCreatedTime(new Date());
+                user.setModifiedBy(getLoggedInUsername());
+                user.setModifiedTime(new Date());
+                if (!ObjectUtils.isNullorEmpty(userImportForm.getFullName())) {
+                    user.setFullName(userImportForm.getFullName());
+                } else {
+                    throw new IllegalArgumentException("Full name can not be blank!");
+                }
+                if (!ObjectUtils.isNullorEmpty(userImportForm.getGender())) {
+                    if (userImportForm.getGender().equalsIgnoreCase("Nam")) {
+                        user.setGender(true);
+                    } else {
+                        user.setGender(false);
+                    }
+                } else {
+                    user.setGender(false);
+                }
+                Role role = roleService.getByCode(RoleConstant.ROLE_HOC_SINH);
+                if (!ObjectUtils.isNullorEmpty(role)) {
+                    user.setRoleCode(role.getRoleCode());
+                }
+                String username = getNewAccountWithFullName(userImportForm.getFullName());
+                if (!ObjectUtils.isNullorEmpty(username)) {
+                    user.setUsername(username);
+                } else {
+                    throw new IllegalArgumentException("Fail in create account!");
+                }
+                user.setPassword(defaultPassword);
+                Class clazz = classService.getClasByName(userImportForm.getClassName());
+                user.setClassID(clazz.getId());
+                listUser.add(user);
+            }
+            repository.saveAll(listUser);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
 }

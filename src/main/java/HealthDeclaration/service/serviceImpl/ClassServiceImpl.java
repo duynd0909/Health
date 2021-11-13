@@ -121,4 +121,9 @@ public class ClassServiceImpl extends BaseService implements IClassService {
         Class clazz = classRepository.getByClassName(className);
         return ObjectUtils.isNullorEmpty(clazz);
     }
+
+    @Override
+    public Class getClasByName(String className) {
+        return classRepository.getClasByName(className);
+    }
 }

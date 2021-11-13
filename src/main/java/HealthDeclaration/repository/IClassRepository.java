@@ -27,4 +27,8 @@ public interface IClassRepository extends JpaRepository<Class, Long>, CrudReposi
 
     @Query(value = "Select cl FROM Class cl where cl.id = :id")
     Class getClassById(@Param("id") Long id);
+
+    @Query(value = "Select cl FROM Class cl where cl.name = :className")
+    Class getClasByName(@Param("className") String className);
+
 }
