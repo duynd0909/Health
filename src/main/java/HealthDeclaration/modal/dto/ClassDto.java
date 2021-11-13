@@ -31,6 +31,14 @@ public class ClassDto {
         this.allowViewReport = allowViewReport;
     }
 
+    public ClassDto(Long id, String className, Long teacherID, String teacherAccount, String teacherName) {
+        this.id = id;
+        this.className = className;
+        this.teacherID = teacherID;
+        this.teacherAccount = teacherAccount;
+        this.teacherName = teacherName;
+    }
+
     public ClassDto(Long id, String className) {
         this.id = id;
         this.className = className;

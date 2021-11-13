@@ -91,7 +91,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
     }
 
-    final private Set<String> skipUrls = new HashSet<>(Arrays.asList("/api/login"));
+    final private Set<String> skipUrls = new HashSet<>(Arrays.asList("/api/login","/api/logout"));
     final private AntPathMatcher pathMatcher = new AntPathMatcher();
     @Override
     protected boolean shouldNotFilter(final HttpServletRequest request) {

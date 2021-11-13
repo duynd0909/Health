@@ -1,6 +1,7 @@
 package HealthDeclaration.service.serviceImpl;
 
 import HealthDeclaration.common.base.service.BaseService;
+import HealthDeclaration.common.utils.ObjectUtils;
 import HealthDeclaration.form.HealthAddForm;
 import HealthDeclaration.modal.dto.HealthReportDTO;
 import HealthDeclaration.modal.entity.HealthReport;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -53,6 +55,7 @@ public class HeathReportServiceImpl extends BaseService implements HealthReportS
 			report.setCloseToRiskingPeople(form.getCloseToRiskingPeople());
 			report.setCloseToCountry(form.getCloseToCountry());
 			report.setCloseToSicking(form.getCloseToSicking());
+			report.setFactor(form.getFactor());
 			healthReportRepository.save(report);
 
 			// Update user infor
@@ -77,7 +80,11 @@ public class HeathReportServiceImpl extends BaseService implements HealthReportS
 	@Override
 	public List<HealthReportDTO> getReportsByUsername(String username){
 		try {
-			return healthReportRepository.getReportsByUsername(username);
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(new Date());
+			cal.add(Calendar.DATE, -14);
+			Date dateBefore14Days = cal.getTime();
+			return healthReportRepository.getReportsByUsername(username,dateBefore14Days);
 		}catch (Exception e){
 			return null;
 		}

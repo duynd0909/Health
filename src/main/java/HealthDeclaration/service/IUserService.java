@@ -53,4 +53,6 @@ public interface IUserService {
     String resetPasswordByUsername(String username);
 
     String changePasswordByUsername(UserChangePassForm form);
+
+    String changeYourPassword(UserChangePassForm form);
 }

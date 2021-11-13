@@ -418,6 +418,29 @@ public class UserServiceImpl extends BaseService implements IUserService {
         return null;
     }
 
+    @Override
+    public String changeYourPassword(UserChangePassForm form) {
+        String username = getLoggedInUsername();
+        if(ObjectUtils.isNullorEmpty(username)
+                || ObjectUtils.isNullorEmpty(form.getOldPassword())
+                || ObjectUtils.isNullorEmpty(form.getNewPassword())
+                || ObjectUtils.isNullorEmpty(form.getConfirmPassword())) {
+            LOGGER.error("Thông tin tài khoản mật khẩu chưa hợp lệ!");
+        }
+
+        User user = repository.getByUsernameAndPassword(form.getUsername(), form.getOldPassword());
+        if(!ObjectUtils.isNullorEmpty(user)) {
+            user.setModifiedTime(new Date());
+            user.setModifiedBy(getLoggedInUsername());
+            user.setPassword(form.getNewPassword());
+            repository.save(user);
+            return form.getNewPassword();
+        } else {
+            LOGGER.error("Mật khẩu không hợp lệ");
+        }
+        return "Mật khẩu không hợp lệ";
+    }
+
     private String getNewAccountWithFullName(String fullName) {
         String account = null;
         fullName = StringUtils.convertVietnameseToEnglish(fullName);

@@ -69,4 +69,18 @@ public class TrackingReportController {
         }
         return ResponseUtils.buildResponseMessage(true, responseMessage);
     }
+
+    @GetMapping(value = "/get-list-by-username")
+    public ResponseEntity getTrackingReportByUsername(@RequestParam String username) {
+        ResponseMessage responseMessage = new ResponseMessage();
+        try{
+            responseMessage.setSuccess(true);
+            responseMessage.setData(service.getTrackingReportByUsername(username));
+        } catch (Exception e) {
+            log.error(e);
+            responseMessage.setSuccess(false);
+            return ResponseUtils.buildResponseMessage(false, responseMessage);
+        }
+        return ResponseUtils.buildResponseMessage(true, responseMessage);
+    }
 }

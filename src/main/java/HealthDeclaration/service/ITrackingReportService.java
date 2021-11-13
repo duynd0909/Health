@@ -2,6 +2,7 @@ package HealthDeclaration.service;
 
 import HealthDeclaration.form.HealthReportAddForm;
 import HealthDeclaration.modal.dto.HealthFormDto;
+import HealthDeclaration.modal.dto.TrackingReportDTO;
 import HealthDeclaration.modal.entity.TrackingReport;
 
 import java.util.List;
@@ -16,4 +17,11 @@ public interface ITrackingReportService {
     Long countSearchHealthFormReport(Long userId);
 
     TrackingReport getById(Long id);
+
+    /**
+     *
+     * @param username
+     * @return
+     */
+    List<TrackingReportDTO> getTrackingReportByUsername(String username );
 }

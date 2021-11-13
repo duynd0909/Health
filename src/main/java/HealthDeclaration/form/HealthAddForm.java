@@ -17,6 +17,7 @@ public class HealthAddForm {
 	private Long districtCode;
 	private Long wardCode;
 	private String addressDetail;
+	private String factor;
 
 	private Boolean contactToPlace;
 	private Boolean sicking;

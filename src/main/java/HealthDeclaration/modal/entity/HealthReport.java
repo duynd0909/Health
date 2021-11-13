@@ -29,5 +29,6 @@ public class HealthReport extends BaseEntity {
 	private Boolean closeToRiskingPeople;
 	private Boolean contactToPlace;
 	private Boolean sicking;
+	private String factor;
 
 }

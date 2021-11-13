@@ -3,6 +3,7 @@ package HealthDeclaration.service.serviceImpl;
 import HealthDeclaration.common.base.service.BaseService;
 import HealthDeclaration.form.HealthReportAddForm;
 import HealthDeclaration.modal.dto.HealthFormDto;
+import HealthDeclaration.modal.dto.TrackingReportDTO;
 import HealthDeclaration.modal.entity.TrackingReport;
 import HealthDeclaration.modal.request.UserUpdateForm;
 import HealthDeclaration.repository.ITrackingReportRepository;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -113,5 +115,13 @@ public class TrackingReportServiceImpl extends BaseService implements ITrackingR
     public TrackingReport getById(Long id) {
         TrackingReport report = iTrackingReportRepository.findById(id).get();
         return report;
+    }
+    @Override
+    public List<TrackingReportDTO> getTrackingReportByUsername(String username ){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.DATE, -14);
+        Date dateBefore14Days = cal.getTime();
+        return iTrackingReportRepository.getTrackingReportByUsername(username,dateBefore14Days);
     }
 }

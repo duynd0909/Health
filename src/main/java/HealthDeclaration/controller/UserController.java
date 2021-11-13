@@ -256,4 +256,22 @@ public class UserController {
 		}
 		return ResponseUtils.buildResponseMessage(true, responseMessage);
 	}
+
+	@PostMapping("/change-your-password")
+	public ResponseEntity changeYourPassword(@RequestBody UserChangePassForm form) {
+		ResponseMessage responseMessage = new ResponseMessage();
+		try {
+			String changePass = service.changeYourPassword(form);
+			if(!changePass.equalsIgnoreCase("Mật khẩu không hợp lệ")) {
+				changePass = "Success";
+			}
+			responseMessage.setSuccess(true);
+			responseMessage.setData(changePass);
+		} catch (Exception e) {
+			responseMessage.setSuccess(false);
+			responseMessage.setData(false);
+			return ResponseUtils.buildResponseMessage(false, responseMessage);
+		}
+		return ResponseUtils.buildResponseMessage(true, responseMessage);
+	}
 }

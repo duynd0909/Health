@@ -40,4 +40,7 @@ public interface IUserRepository extends JpaRepository<User, Long>, CrudReposito
 
     @Query(value = "SELECT u.allowViewReport FROM User u WHERE u.username = :username")
     Boolean getAllowedViewReport(@Param("username") String username);
+
+    @Query(value = "SELECT u FROM User u WHERE u.username = :username and u.password = :password ")
+    User getByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
 }

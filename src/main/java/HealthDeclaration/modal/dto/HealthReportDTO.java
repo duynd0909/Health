@@ -39,5 +39,6 @@ public class HealthReportDTO {
     private String provinceName;
     private String districtName;
     private String wardName;
+    private String factor;
 
 }
