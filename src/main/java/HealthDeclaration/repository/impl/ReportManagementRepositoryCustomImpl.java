@@ -26,7 +26,14 @@ public class ReportManagementRepositoryCustomImpl extends BaseRepository impleme
     public List<UserDto> searchStudent(UserFormSearch form, int pageIndex, int pageSize) {
         TypedQuery<UserDto> query = this.buildSearchReportManagement(false, form, UserDto.class);
         query.setFirstResult((pageIndex - 1) * pageSize).setMaxResults(pageSize);
-        return query.getResultList();
+        List<UserDto> listResult = query.getResultList();
+        int i=1;
+        for (UserDto dto:
+                listResult ) {
+            dto.setIndex(i);
+            i++;
+        }
+        return listResult;
     }
 
     @Override
