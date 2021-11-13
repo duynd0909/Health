@@ -13,7 +13,7 @@ public class CORSConfiguration {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:8080", "http://localhost:8181", "http://healthdeclare.hipe.com.vn:8080")
+                        .allowedOrigins("https://front-end-health.herokuapp.com", "https://back-end-health.herokuapp.com", "http://healthdeclare.hipe.com.vn:8080")
                         .allowedMethods("HEAD","GET","POST","PUT","DELETE","PATCH").allowedHeaders("*");
             }
         };
