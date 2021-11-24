@@ -52,7 +52,8 @@ public class ReportManagementRepositoryCustomImpl extends BaseRepository impleme
             sql.append(" SELECT  new HealthDeclaration.modal.dto.UserDto(u.id, u.username, u.fullName, u.dob, u.gender," +
                     " u.phoneNumber, u.parentPhoneNumber, u.provinceCode, prv.name as provinceName, u.districtCode, " +
                     " dis.name as districtName, u.wardCode, wa.name as wardName, u.addressDetail, u.roleCode, " +
-                    " rl.roleName, u.classID, cl.name, cl.teacherUsername ,u.healthInsuranceId,u.gmail,u.allowViewReport) "  );
+                    " rl.roleName, u.classID, cl.name, cl.teacherUsername ,u.healthInsuranceId,u.gmail,u.allowViewReport," +
+                    " (SELECT GROUP_CONCAT(hr.factor)  FROM HealthReport hr WHERE hr.username = u.username GROUP BY hr.username ORDER BY hr.createdTime DESC )) "  );
         }
         sql.append( " FROM User u "
                 + " LEFT JOIN Province prv ON prv.code = u.provinceCode "

@@ -35,6 +35,7 @@ public class UserDto {
     private String healthInsuranceId;
     private String email;
     private Boolean allowViewReport;
+    private String factorGroup;
 
     public UserDto(Long id, String userName, String fullName) {
         this.id = id;
@@ -45,7 +46,7 @@ public class UserDto {
     public UserDto(Long id, String userName, String fullName, Date dob, Boolean gender, String phoneNumber,
                    String parentPhoneNumber, Long provinceCode, String provinceName, Long districtCode,
                    String districtName, Long wardCode, String wardName, String addressDetail, String roleCode,
-                   String roleName, Long classID, String className, String teacherUsername, String healthInsuranceId, String email, Boolean allowViewReport) {
+                   String roleName, Long classID, String className, String teacherUsername, String healthInsuranceId, String email, Boolean allowViewReport,String factorGroup) {
         this.id = id;
         this.userName = userName;
         this.fullName = fullName;
@@ -68,6 +69,7 @@ public class UserDto {
         this.healthInsuranceId = healthInsuranceId;
         this.email = email;
         this.allowViewReport = allowViewReport;
+        this.factorGroup = factorGroup;
     }
 
     public UserDto(Long id, String userName, String fullName, Date dob, Boolean gender, String phoneNumber,
