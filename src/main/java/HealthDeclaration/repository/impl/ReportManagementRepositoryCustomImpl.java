@@ -11,9 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Repository
 public class ReportManagementRepositoryCustomImpl extends BaseRepository implements ReportManagementRepositoryCustom {
@@ -45,7 +44,11 @@ public class ReportManagementRepositoryCustomImpl extends BaseRepository impleme
     private <T> TypedQuery<T> buildSearchReportManagement(final boolean count, UserFormSearch formSearch, Class<T> clazz) {
         StringBuilder sql = new StringBuilder();
         Map<String, Object> params = new HashMap<>();
-
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.DATE, -14);
+        Date dateBefore14Days = cal.getTime();
+        String format = new SimpleDateFormat("yyyy-MM-dd").format(dateBefore14Days);
         if (count) {
             sql.append("SELECT COUNT (u.id) ");
         } else {
@@ -53,7 +56,8 @@ public class ReportManagementRepositoryCustomImpl extends BaseRepository impleme
                     " u.phoneNumber, u.parentPhoneNumber, u.provinceCode, prv.name as provinceName, u.districtCode, " +
                     " dis.name as districtName, u.wardCode, wa.name as wardName, u.addressDetail, u.roleCode, " +
                     " rl.roleName, u.classID, cl.name, cl.teacherUsername ,u.healthInsuranceId,u.gmail,u.allowViewReport," +
-                    " (SELECT GROUP_CONCAT(hr.factor)  FROM HealthReport hr WHERE hr.username = u.username GROUP BY hr.username ORDER BY hr.createdTime DESC )) "  );
+                    " (SELECT GROUP_CONCAT(hr.factor)  FROM HealthReport hr WHERE hr.username = u.username AND hr.createdTime >= "+ format +
+                    " GROUP BY hr.username ORDER BY hr.createdTime DESC )) "  );
         }
         sql.append( " FROM User u "
                 + " LEFT JOIN Province prv ON prv.code = u.provinceCode "
@@ -62,6 +66,7 @@ public class ReportManagementRepositoryCustomImpl extends BaseRepository impleme
                 + " LEFT JOIN Ward wa ON wa.code = u.wardCode "
                 + " LEFT JOIN Role rl ON rl.roleCode = u.roleCode ");
         sql.append(" WHERE  1=1 ");
+
         if (!ObjectUtils.isNullorEmpty(formSearch.getFullName())) {
             sql.append(" and LOWER(u.fullName) like :studentName ");
             params.put("studentName", "%" + formSearch.getFullName().toLowerCase() + "%");
